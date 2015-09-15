@@ -1,7 +1,7 @@
 <?php
 
 //web directory root
-if( !defined( 'DOCUMENT_ROOT' ) ) 	define( 'DOCUMENT_ROOT', '/' );
+if( !defined( 'DOCUMENT_ROOT' ) ) 	define( 'DOCUMENT_ROOT', './' );
 
 //paths
 if( !defined( 'STAT_XML_URL' ) ) 	define( 'STAT_XML_URL', 'http://ls.fsbn.eu/stats/' );

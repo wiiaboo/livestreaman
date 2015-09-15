@@ -68,14 +68,14 @@ class Utils{
 			$new_entry = true;
 			
 			foreach( $streamers as $streamer ){
-				if( (string) $streamer->name == (string) $live_streamer->name ){
+				if( (string) $live_streamer->name === '' || (string) $streamer->name == (string) $live_streamer->name ){
 					$new_entry = false;
 					break;
 				}
 			}
 			
 			if( $new_entry === true ){
-				$new_streamers[] = [ 'streamer' => ['name' => (string) $live_streamer->name, 'stream_url' => 'http://ls.fsbn.eu/live/' . (string) $live_streamer->name ] ];
+				$new_streamers[] = [ 'streamer' => ['name' => (string) $live_streamer->name, 'stream_url' => '/' . (string) $live_streamer->name ] ];
 			}
 		}
 		return $new_streamers;

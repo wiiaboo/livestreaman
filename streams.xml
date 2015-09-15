@@ -2,18 +2,22 @@
 <streams>
 	<streamer>
 		<name>zagger</name>
-		<stream_url>http://ls.fsbn.eu/live/zagger</stream_url>
+		<stream_url>/zagger</stream_url>
 	</streamer>
 	<streamer>
 		<name>kupo</name>
-		<stream_url>http://ls.fsbn.eu/live/kupo</stream_url>
+		<stream_url>/kupo</stream_url>
 	</streamer>
 	<streamer>
 		<name>sk1ron</name>
-		<stream_url>http://ls.fsbn.eu/live/sk1ron</stream_url>
+		<stream_url>/sk1ron</stream_url>
 	</streamer>
 	<streamer>
 		<name>mega</name>
-		<stream_url>http://ls.fsbn.eu/live/mega</stream_url>
+		<stream_url>/mega</stream_url>
+	</streamer>
+	<streamer>
+		<name>"hey faggots, buy wards"</name>
+		<stream_url>/zykar</stream_url>
 	</streamer>
 </streams>
