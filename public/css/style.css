@@ -5,6 +5,7 @@
 html, body {
   min-height: 100%;
   font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+  background: #666;
 }
 
 a {
@@ -126,6 +127,7 @@ a {
 
 .content {
   padding: 100px 20px 20px 20px;
+  background-color: #666;
 }
 
 .close-menu {
