@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<streams>
+	<streamer>
+		<name>zagger</name>
+		<stream_url>http://ls.fsbn.eu/live/zagger</stream_url>
+	</streamer>
+	<streamer>
+		<name>kupo</name>
+		<stream_url>http://ls.fsbn.eu/live/kupo</stream_url>
+	</streamer>
+	<streamer>
+		<name>sk1ron</name>
+		<stream_url>http://ls.fsbn.eu/live/sk1ron</stream_url>
+	</streamer>
+	<streamer>
+		<name>mega</name>
+		<stream_url>http://ls.fsbn.eu/live/mega</stream_url>
+	</streamer>
+</streams>
