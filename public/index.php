@@ -27,15 +27,15 @@ if( $new_streamers = Utils::getNewStreamers( $xml->getXML(), $stats->getXML() ) 
 	}
 }
 
-//finnaly, get (updated) streamers list
+//finaly, get (updated) streamers list
 $streamers_list = Utils::getStreamersList( $xml->getXML(), $stats->getXML() );
 
 if( isset( $_GET['stream'] ) ){
 	$cur_stream = substr($_GET['stream'], 1);
 }
-//elseif( $live = Utils::getLiveStreamer( $xml->getXML() ) ){
-//	$cur_stream = $live['name'];
-//}
+elseif( $live = Utils::getLiveStreamer( $xml->getXML() ) ){
+	$cur_stream = $live['name'];
+}
 else{ $cur_stream = 'mega'; }
 
 //load template

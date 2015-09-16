@@ -35,7 +35,7 @@
 			
 			<?php foreach( $streamers_list as $streamer ): ?>
 				<div class="pill">
-					<a href="<?php echo $streamer['stream_url'] ?>"><?php echo $streamer['name'] ?></a>
+					<a href="/<?php echo $streamer['stream_url'] ?>"><?php echo $streamer['name'] ?></a>
 					<?php if( $streamer['live'] ): ?>
 						<span class="live"></span>
 					<?php endif; ?>

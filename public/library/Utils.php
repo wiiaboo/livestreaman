@@ -42,7 +42,7 @@ class Utils{
 			$is_live = false;
 			
 			foreach( $streamers_live as $streamer_live ){
-				if( $name == (string) $streamer_live->name ){
+				if( $stream_url == (string) $streamer_live->name ){
 					$is_live = self::isLive( $streamer_live );
 					break;
 				}
@@ -68,8 +68,8 @@ class Utils{
 			$new_entry = true;
 			
 			foreach( $streamers as $streamer ){
-                if( (string) $live_streamer->name === '' &&
-                    (string) $streamer->stream_url == (string) $live_streamer->stream_url ||
+                if( (string) $live_streamer->name === '' ||
+                    (string) $streamer->stream_url == (string) $live_streamer->name ||
                     (string) $streamer->name == (string) $live_streamer->name ){
 					$new_entry = false;
 					break;
@@ -80,7 +80,7 @@ class Utils{
                 $new_streamers[] = [
                     'streamer' => [
                         'name' => (string) $live_streamer->name,
-                        'stream_url' => '/' . (string) $live_streamer->name
+                        'stream_url' => (string) $live_streamer->name
                     ]
                 ];
 			}
