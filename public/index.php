@@ -33,10 +33,10 @@ $streamers_list = Utils::getStreamersList( $xml->getXML(), $stats->getXML() );
 if( isset( $_GET['stream'] ) ){
 	$cur_stream = substr($_GET['stream'], 1);
 }
-elseif( $live = Utils::getLiveStreamer( $streamers_list ) ){
-	$cur_stream = $live['name'];
+elseif ( $live = Utils::getLiveStreamer( $streamers_list ) ) {
+    $cur_stream = $live['stream_url'];
 }
-else{ $cur_stream = 'nada'; }
+else{ $cur_stream = 'mega'; }
 
 //load template
 include DOCUMENT_ROOT . 'template.php';
