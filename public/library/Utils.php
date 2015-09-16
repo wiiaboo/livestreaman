@@ -17,7 +17,7 @@ class Utils{
 	
 	static function getLiveStreamer( $streamers ){
 		foreach( $streamers as $streamer ){
-			if( (string) $streamer->name !== '' && self::isLive( $streamer ) ){
+			if( $streamer->live ){
 				return $streamer;
 			}
 		}
