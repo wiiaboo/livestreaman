@@ -166,12 +166,24 @@ a {
   height: 7px;
   background: red;
 }
-
-#playersXnbojBtEFKm_wrapper {
-  max-height: 540px !important;
+.content p { text-align: center }
+.content p a {
+    padding: 0.5em;
+    background-color: #fff;
+    display: inline-block;
 }
 
-@media (max-width: 1000px) {
+#playersXnbojBtEFKm_wrapper {
+    max-height: 500px !important;
+}
+
+@media (max-width: 1366px) {
+    #playersXnbojBtEFKm_wrapper {
+        max-height: 450px !important;
+    }
+}
+
+@media (max-width: 720px) {
   html {
     overflow: hidden;
   }

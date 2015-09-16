@@ -60,7 +60,8 @@
 			<div class="content">				
 				<!-- player -->
 				<div id='playersXnbojBtEFKm'></div>
-				
+                <p><a href=<?php echo sprintf( '"rtmp://ls.fsbn.eu/live/%s.flv"', $cur_stream ) ?>>link rtmp (0 delay)</a>
+                <a href=<?php echo sprintf( '"/hls/%s.m3u8"', $cur_stream ) ?>>link hls (aparelhos sem flash) (~40s de delay)</a></p>
 			</div>
 		</div>    
 		<!-- wrapper -->
