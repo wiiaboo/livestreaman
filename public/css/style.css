@@ -166,7 +166,15 @@ a {
   height: 7px;
   background: red;
 }
-@media (max-width: 720px) {
+
+#playersXnbojBtEFKm_wrapper {
+  max-height: 540px !important;
+}
+
+@media (max-width: 1000px) {
+  html {
+    overflow: hidden;
+  }
   .main-nav, .main-footer, .main-header {
     display: none;
   }
