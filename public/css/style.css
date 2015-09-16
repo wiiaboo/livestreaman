@@ -166,3 +166,14 @@ a {
   height: 7px;
   background: red;
 }
+@media (max-width: 720px) {
+  .main-nav, .main-footer, .main-header {
+    display: none;
+  }
+  #main-nav:target + .page-wrap {
+    width: 100%;
+  }
+  .content {
+    padding: 0;
+  }
+}
