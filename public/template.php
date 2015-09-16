@@ -77,7 +77,7 @@
 				file: '<?php echo sprintf( 'rtmp://ls.fsbn.eu/live/flv:%s.flv', $cur_stream ) ?>',
 				autostart: 'true',
 				width: '100%',
-                height: '540',
+				aspectratio: '16:9',
 				rtmp: {
 					bufferlength: 0.1
 				},
