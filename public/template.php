@@ -14,7 +14,7 @@
 		<link href="/css/style.css" rel="stylesheet">
 
 		<!-- Custom Fonts -->
-		<link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<!-- <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
 		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -34,10 +34,12 @@
 			</div>
 			
 			<?php foreach( $streamers_list as $streamer ): ?>
-				<div class="pill">
+				<div class="pill streamer">
 					<a href="/<?php echo $streamer['stream_url'] ?>"><?php echo $streamer['name'] ?></a>
 					<?php if( $streamer['live'] ): ?>
 						<span class="live"></span>
+					<?php else: ?>
+						<span class="off"></span>
 					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
@@ -53,15 +55,15 @@
 				<a href="#" class="close-menu">
 					☰
 				</a>
-    
+
 				<h1><?php echo sprintf( 'Stream do %s', $cur_stream ) ?></h1>
 			</header>
   
-			<div class="content">				
+			<div class="content">
 				<!-- player -->
 				<div id='playersXnbojBtEFKm'></div>
-                <p><a href=<?php echo sprintf( '"rtmp://ls.fsbn.eu/live/%s.flv"', $cur_stream ) ?>>link rtmp (0 delay)</a>
-                <a href=<?php echo sprintf( '"/hls/%s.m3u8"', $cur_stream ) ?>>link hls (aparelhos sem flash) (~40s de delay)</a></p>
+				<p><a href=<?php echo sprintf( '"rtmp://ls.fsbn.eu/live/%s.flv"', $cur_stream ) ?>>link rtmp (0 delay)</a>
+				<a href=<?php echo sprintf( '"/hls/%s.m3u8"', $cur_stream ) ?>>link hls (aparelhos sem flash) (~40s de delay)</a></p>
 			</div>
 		</div>    
 		<!-- wrapper -->
@@ -84,13 +86,33 @@
 				},
 			});
 		</script>
-		
-		<?php if( ! isset( $_GET['stream'] ) ):?>
-			<script type="text/javascript">
-				$(document).ready(function(){
-					$('.open-menu')[0].click();
+		<script type="text/javascript">
+			function thisShitLive() {
+				$.ajax({
+					type: "GET",
+				url: "/stats/",
+				dataType: "xml",
+				success: function(xml) {
+					$streamers = $(document).find("#main-nav > div.streamer");
+					for (var i = $streamers.length - 1; i >= 1; i--) {
+						$streamerurl = $streamers[i].children[0].href.split("/")[3];
+						$streaming = $(xml).find("name:contains("+$streamerurl+") ~ publishing");
+						if ($streaming.length > 0) {
+							$streamers[i].children[1].className = "live";
+						} else {
+							$streamers[i].children[1].className = "off";
+						}
+					};
+					setTimeout(thisShitLive,5000);
+				}
 				});
-			</script>
-		<?php endif; ?>
+			};
+			$(document).ready(function(){
+				<?php if( ! isset( $_GET['stream'] ) ):?>
+					$('.open-menu')[0].click();
+				<?php endif; ?>
+				thisShitLive();
+			});
+		</script>
 	</body>
 </html>
