@@ -31,7 +31,28 @@ if( $new_streamers = Utils::getNewStreamers( $xml->getXML(), $stats->getXML() ) 
 $streamers_list = Utils::getStreamersList( $xml->getXML(), $stats->getXML() );
 
 if( isset( $_GET['stream'] ) ){
-	$cur_stream = substr($_GET['stream'], 1);
+    $info = explode("/", $_GET['stream']);
+	$cur_stream = $info[1];
+    if (count($info) > 2) {
+        if ($info[2] == "nclients") {
+            exit(sprintf("%d",$streamers_list[$cur_stream]['nclients']));
+        } elseif ($info[2] == "live") {
+            if ($streamers_list[$cur_stream]['live']) {
+                exit("live");
+            } else {
+                exit("off");
+            }
+        }
+    }
+    if ($cur_stream == "live") {
+        $livestreamers = array();
+        foreach( $streamers_list as $streamer ){
+            if ($streamer["live"]) {
+                array_push($livestreamers, $streamer["stream_url"]);
+            }
+        }
+        exit(implode(",", $livestreamers));
+    }
 }
 elseif ( $live = Utils::getLiveStreamer( $streamers_list ) ) {
     $cur_stream = $live['stream_url'];

@@ -62,8 +62,11 @@
             <div class="content">
                 <!-- player -->
                 <div id='playersXnbojBtEFKm'></div>
-                <p><a href=<?php echo sprintf( '"rtmp://ls.fsbn.eu/live/%s.flv"', $cur_stream ) ?>>link rtmp (0 delay)</a>
-                <a href=<?php echo sprintf( '"/hls/%s.m3u8"', $cur_stream ) ?>>link hls (aparelhos sem flash) (~40s de delay)</a></p>
+                <p>
+                    <a>Viewers: <span id="viewers">0</span></a>
+                    <a href=<?php echo sprintf( '"rtmp://ls.fsbn.eu/live/%s.flv"', $cur_stream ) ?>>link rtmp (0 delay)</a>
+                    <a href=<?php echo sprintf( '"/hls/%s.m3u8"', $cur_stream ) ?>>link hls (aparelhos sem flash) (~40s de delay)</a>
+                </p>
             </div>
         </div>    
         <!-- wrapper -->
@@ -87,31 +90,59 @@
             });
         </script>
         <script type="text/javascript">
+            $streamers = $(document).find("#main-nav > div.streamer");
+            // function thisShitLive() {
+            //     $.ajax({
+            //         type: "GET",
+            //     url: "/stats/",
+            //     dataType: "xml",
+            //     success: function(xml) {
+            //         for (var i = $streamers.length - 1; i >= 0; i--) {
+            //             $streamerurl = $streamers[i].children[0].href.split("/")[3];
+            //             $streaming = $(xml).find("name:contains("+$streamerurl+") ~ publishing");
+            //             if ($streaming.length > 0) {
+            //                 $streamers[i].children[1].className = "live";
+            //             } else {
+            //                 $streamers[i].children[1].className = "off";
+            //             }
+            //         };
+            //         setTimeout(thisShitLive, 10000);
+            //     }
+            //     });
+            // };
             function thisShitLive() {
-                $.ajax({
-                    type: "GET",
-                url: "/stats/",
-                dataType: "xml",
-                success: function(xml) {
-                    $streamers = $(document).find("#main-nav > div.streamer");
-                    for (var i = $streamers.length - 1; i >= 1; i--) {
-                        $streamerurl = $streamers[i].children[0].href.split("/")[3];
-                        $streaming = $(xml).find("name:contains("+$streamerurl+") ~ publishing");
-                        if ($streaming.length > 0) {
-                            $streamers[i].children[1].className = "live";
-                        } else {
-                            $streamers[i].children[1].className = "off";
-                        }
+                $.get("/live", function(data, status){
+                    if (status == "success") {
+                        $livestreamers = data.split(",");
+                        for (var i = $streamers.length - 1; i >= 0; i--) {
+                            $streamerurl = $streamers[i].children[0].href.split("/")[3];
+                            if ($livestreamers.includes($streamerurl)) {
+                                $streamers[i].children[1].className = "live";
+                            } else {
+                                $streamers[i].children[1].className = "off";
+                            };
+                        };
                     };
-                    setTimeout(thisShitLive,5000);
-                }
+                    setTimeout(thisShitLive, 15000);
                 });
             };
+            function thisShitPopular(){
+                $hito = "<?php echo $cur_stream ?>";
+                $.get("/"+$hito+"/nclients", function(data, status) {
+                    if (status == "success") {
+                        $(document).find("#viewers")[0].innerHTML = data;
+                    } else {
+                        $(document).find("#viewers")[0].innerHTML = "0";
+                    };
+                    setTimeout(thisShitPopular,30000);
+                });
+            }
             $(document).ready(function(){
                 <?php if( ! isset( $_GET['stream'] ) ):?>
                     $('.open-menu')[0].click();
                 <?php endif; ?>
                 thisShitLive();
+                thisShitPopular();
             });
         </script>
     </body>

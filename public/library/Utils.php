@@ -14,6 +14,10 @@ class Utils{
 	static function isLive( $streamer ){
 		return $streamer->bw_video > 0;
 	}
+
+	static function nClients ( $streamer ){
+		return count($streamer->xpath('client[not(publishing) and flashver]'));
+	}
 	
 	static function getLiveStreamer( $streamers ){
 		foreach( $streamers as $streamer ){
@@ -40,14 +44,16 @@ class Utils{
 			$name = (string) $streamer->name;
 			$stream_url = (string) $streamer->stream_url;
 			$is_live = false;
+			$nclients = 0;
 			
 			foreach( $streamers_live as $streamer_live ){
 				if( $stream_url == (string) $streamer_live->name ){
 					$is_live = self::isLive( $streamer_live );
+					$nclients = self::nClients( $streamer_live );
 					break;
 				}
 			}
-			$streamers_list [] = [ 'name' => $name, 'stream_url' => $stream_url, 'live' => $is_live ];
+			$streamers_list [$stream_url] = [ 'name' => $name, 'stream_url' => $stream_url, 'live' => $is_live, 'nclients' => $nclients ];
 		}
 		return $streamers_list;
 	}
