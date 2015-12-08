@@ -17,7 +17,15 @@ class Utils{
 
 	static function nClients ( $streamer ){
 		return count($streamer->xpath('client[not(publishing) and flashver]'));
-	}
+    }
+
+    static function streamerIP ( $streamer ){
+        $streamerIP = $streamer->xpath('client[publishing]');
+        if ( count($streamerIP) > 0 ){
+            return $streamerIP[0]->address;
+        }
+        return "n";
+    }
 	
 	static function getLiveStreamer( $streamers ){
 		foreach( $streamers as $streamer ){
@@ -44,16 +52,18 @@ class Utils{
 			$name = (string) $streamer->name;
 			$stream_url = (string) $streamer->stream_url;
 			$is_live = false;
-			$nclients = 0;
+            $nclients = 0;
+            $streamer_ip = "";
 			
 			foreach( $streamers_live as $streamer_live ){
 				if( $stream_url == (string) $streamer_live->name ){
 					$is_live = self::isLive( $streamer_live );
-					$nclients = self::nClients( $streamer_live );
+                    $nclients = self::nClients( $streamer_live );
+                    $streamer_ip = (string) self::streamerIP( $streamer_live );
 					break;
 				}
 			}
-			$streamers_list [$stream_url] = [ 'name' => $name, 'stream_url' => $stream_url, 'live' => $is_live, 'nclients' => $nclients ];
+			$streamers_list [$stream_url] = [ 'name' => $name, 'stream_url' => $stream_url, 'live' => $is_live, 'nclients' => $nclients, 'streamer_ip' => $streamer_ip ];
 		}
 		return $streamers_list;
 	}

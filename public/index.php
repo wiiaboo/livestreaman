@@ -29,10 +29,12 @@ if( $new_streamers = Utils::getNewStreamers( $xml->getXML(), $stats->getXML() ) 
 
 //finaly, get (updated) streamers list
 $streamers_list = Utils::getStreamersList( $xml->getXML(), $stats->getXML() );
+$own_ip = false;
 
 if( isset( $_GET['stream'] ) ){
     $info = explode("/", $_GET['stream']);
-	$cur_stream = $info[1];
+    $cur_stream = $info[1];
+    if ($_SERVER['REMOTE_ADDR'] === $streamers_list[$cur_stream]['streamer_ip']) { $own_ip = true; }
     if (count($info) > 2) {
         if ($info[2] == "nclients") {
             exit(sprintf("%d",$streamers_list[$cur_stream]['nclients']));
@@ -56,6 +58,7 @@ if( isset( $_GET['stream'] ) ){
 }
 elseif ( $live = Utils::getLiveStreamer( $streamers_list ) ) {
     $cur_stream = $live['stream_url'];
+    //if ($_SERVER['REMOTE_ADDR'] === $live['streamer_ip']) { $own_ip = true; }
 }
 else{ $cur_stream = 'mega'; }
 

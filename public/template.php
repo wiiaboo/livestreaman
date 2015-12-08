@@ -33,16 +33,16 @@
                 <a href="#">QUEM POSSO VISIONAR</a>
             </div>
             
-            <?php foreach( $streamers_list as $streamer ): ?>
+<?php foreach( $streamers_list as $streamer ): ?>
                 <div class="pill streamer">
                     <a href="/<?php echo $streamer['stream_url'] ?>"><?php echo $streamer['name'] ?></a>
-                    <?php if( $streamer['live'] ): ?>
-                        <span class="live"></span>
-                    <?php else: ?>
-                        <span class="off"></span>
-                    <?php endif; ?>
+<?php if( $streamer['live'] ): ?>
+                    <span class="live"></span>
+<?php else: ?>
+                    <span class="off"></span>
+<?php endif; ?>
                 </div>
-            <?php endforeach; ?>
+<?php endforeach; ?>
         </nav>
         <!-- navigation -->
             
@@ -63,9 +63,11 @@
                 <!-- player -->
                 <div id='playersXnbojBtEFKm'></div>
                 <p>
-                    <a>Viewers: <span id="viewers">0</span></a>
+                    <a href="/stats">Viewers: <span id="viewers">0</span></a>
                     <a href=<?php echo sprintf( '"rtmp://ls.fsbn.eu/live/%s.flv"', $cur_stream ) ?>>link rtmp (0 delay)</a>
                     <a href=<?php echo sprintf( '"/hls/%s.m3u8"', $cur_stream ) ?>>link hls (aparelhos sem flash) (~40s de delay)</a>
+                    <?php if ($own_ip === true) echo '<a onclick="dropStream()" style="cursor:pointer">kill stream</a>' ?>
+
                 </p>
             </div>
         </div>    
@@ -80,7 +82,7 @@
         <script src="http://jwpsrv.com/library/QlceYJEcEeOYBCIACi0I_Q.js"></script>
         <script type='text/javascript'>
             jwplayer('playersXnbojBtEFKm').setup({
-                file: '<?php echo sprintf( 'rtmp://ls.fsbn.eu/live/flv:%s.flv', $cur_stream ) ?>',
+                file: <?php echo sprintf( "'rtmp://ls.fsbn.eu/live/flv:%s.flv'", $cur_stream ) ?>,
                 autostart: 'true',
                 width: '100%',
                 aspectratio: '16:9',
@@ -90,40 +92,31 @@
             });
         </script>
         <script type="text/javascript">
+<?php if ($own_ip === true): ?>
+            function dropStream() {
+                $.get("/control/drop/publisher?app=live&name=<?php echo $cur_stream; ?>");
+            }
+<?php endif; ?>
             $streamers = $(document).find("#main-nav > div.streamer");
-            // function thisShitLive() {
-            //     $.ajax({
-            //         type: "GET",
-            //     url: "/stats/",
-            //     dataType: "xml",
-            //     success: function(xml) {
-            //         for (var i = $streamers.length - 1; i >= 0; i--) {
-            //             $streamerurl = $streamers[i].children[0].href.split("/")[3];
-            //             $streaming = $(xml).find("name:contains("+$streamerurl+") ~ publishing");
-            //             if ($streaming.length > 0) {
-            //                 $streamers[i].children[1].className = "live";
-            //             } else {
-            //                 $streamers[i].children[1].className = "off";
-            //             }
-            //         };
-            //         setTimeout(thisShitLive, 10000);
-            //     }
-            //     });
-            // };
             function thisShitLive() {
                 $.get("/live", function(data, status){
                     if (status == "success") {
                         $livestreamers = data.split(",");
                         for (var i = $streamers.length - 1; i >= 0; i--) {
-                            $streamerurl = $streamers[i].children[0].href.split("/")[3];
+                            $streamerurl = $streamers[i].children[0].href.split("/").pop();
                             if ($livestreamers.includes($streamerurl)) {
                                 $streamers[i].children[1].className = "live";
                             } else {
                                 $streamers[i].children[1].className = "off";
                             };
                         };
+                        if ($livestreamers[0] != "") {
+                            setTimeout(thisShitLive, 15000);
+                        } else {
+                            setTimeout(thisShitLive, 5000);
+                        };
                     };
-                    setTimeout(thisShitLive, 15000);
+                    
                 });
             };
             function thisShitPopular(){
