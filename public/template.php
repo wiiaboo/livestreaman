@@ -58,7 +58,6 @@
                     <a href="/stats">Viewers: <span id="viewers">0</span></a>
                     <a href=<?php echo sprintf( '"rtmp://ls.fsbn.eu/live/%s.flv"', $cur_stream ) ?>>link rtmp (0 delay)</a>
                     <a href=<?php echo sprintf( '"/hls/%s.m3u8"', $cur_stream ) ?>>link hls (aparelhos sem flash) (~40s de delay)</a>
-                    <?php if ($own_ip === true) echo '<a onclick="dropStream()" style="cursor:pointer">kill stream</a>' ?>
 
                 </p>
             </div>
@@ -80,11 +79,6 @@
             });
         </script>
         <script type="text/javascript">
-<?php if ($own_ip === true): ?>
-            function dropStream() {
-                $.get("/control/drop/publisher?app=live&name=<?php echo $cur_stream; ?>");
-            }
-<?php endif; ?>
             $streamers = $(document).find("#main-nav > div.streamer");
             function thisShitLive() {
                 $.get("/live", function(data, status){

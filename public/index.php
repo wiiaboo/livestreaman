@@ -30,21 +30,24 @@ if( $new_streamers = Utils::getNewStreamers( $xml->getXML(), $stats->getXML() ) 
 //finaly, get (updated) streamers list
 $streamers_list = Utils::getStreamersList( $xml->getXML(), $stats->getXML() );
 $own_ip = false;
+$response = "";
 
 if( isset( $_GET['stream'] ) ){
     $info = explode("/", $_GET['stream']);
     $cur_stream = $info[1];
-    if ($_SERVER['REMOTE_ADDR'] === $streamers_list[$cur_stream]['streamer_ip']) { $own_ip = true; }
     if (count($info) > 2) {
         if ($info[2] == "nclients") {
-            exit(sprintf("%d",$streamers_list[$cur_stream]['nclients']));
+            $response=sprintf("%d",$streamers_list[$cur_stream]['nclients']);
         } elseif ($info[2] == "live") {
             if ($streamers_list[$cur_stream]['live']) {
-                exit("live");
+                $response="live";
             } else {
-                exit("off");
+                $response="off";
             }
         }
+        header('Content-Type: text/plain; charset=UTF-8');
+        header('Content-Length: '.strlen($response));
+        exit($response);
     }
     if ($cur_stream == "live") {
         $livestreamers = array();
@@ -53,12 +56,18 @@ if( isset( $_GET['stream'] ) ){
                 array_push($livestreamers, $streamer["stream_url"]);
             }
         }
-        exit(implode(",", $livestreamers));
+        $response=implode(",", $livestreamers);
+        header('Content-Type: text/plain; charset=UTF-8');
+        header('Content-Length: '.strlen($response));
+        exit($response);
+    }
+    else {
+        if ($_SERVER['REMOTE_ADDR'] === $streamers_list[$cur_stream]['streamer_ip']) { $own_ip = true; }
     }
 }
 elseif ( $live = Utils::getLiveStreamer( $streamers_list ) ) {
     $cur_stream = $live['stream_url'];
-    //if ($_SERVER['REMOTE_ADDR'] === $live['streamer_ip']) { $own_ip = true; }
+    header("Refresh: 1; url=".$cur_stream);
 }
 else{ $cur_stream = 'mega'; }
 
