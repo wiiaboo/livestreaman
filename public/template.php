@@ -22,17 +22,17 @@
         <!-- navigation -->
         <nav class="main-nav" id="main-nav">
             <div class="pill">
-                <a href="#">QUEM POSSO VISIONAR</a>
+                <a href="#">STREAMS</a>
             </div>
             
 <?php foreach( $streamers_list as $streamer ): ?>
-                <div class="pill streamer">
-                    <a href="/<?php echo $streamer['stream_url'] ?>"><?php echo $streamer['name'] ?></a>
 <?php if( $streamer['live'] ): ?>
-                    <span class="live"></span>
+                <div class="pill streamer live">
 <?php else: ?>
-                    <span class="off"></span>
+                <div class="pill streamer off">
 <?php endif; ?>
+                    <a href="/<?php echo $streamer['stream_url'] ?>"><?php echo $streamer['name'] ?></a>
+                    <span></span>
                 </div>
 <?php endforeach; ?>
         </nav>
@@ -72,7 +72,6 @@
                 file: <?php echo sprintf( "'rtmp://ls.fsbn.eu/live/flv:%s.flv'", $cur_stream ) ?>,
                 autostart: 'true',
                 width: '100%',
-                aspectratio: '16:9',
                 rtmp: {
                     bufferlength: 0.1
                 },
