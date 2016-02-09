@@ -79,43 +79,49 @@
             });
         </script>
         <script type="text/javascript">
-            $streamers = $(document).find("#main-nav > div.streamer");
+            var streamers = document.querySelectorAll("#main-nav > div.streamer");
             function thisShitLive() {
-                $.get("/live", function(data, status){
-                    if (status == "success") {
-                        $livestreamers = data.split(",");
-                        for (var i = $streamers.length - 1; i >= 0; i--) {
-                            $streamerurl = $streamers[i].children[0].href.split("/").pop();
-                            if ($livestreamers.includes($streamerurl)) {
-                                $streamers[i].children[1].className = "live";
+                var request = new XMLHttpRequest();
+                request.open('GET', '/live');
+                request.onload = function() {
+                    var livestreamers;
+                    var streamerurl;
+                    if (request.status >= 200 && request.status < 400) {
+                        livestreamers = request.responseText.split(',');
+                        for(i=streamers.length-1; i>=0; i--) {
+                            streamerurl = streamers[i].children[0].href.split('/').pop();
+                            if (livestreamers.includes(streamerurl)) {
+                                streamers[i].setAttribute('class','pill streamer live');
                             } else {
-                                $streamers[i].children[1].className = "off";
+                                streamers[i].setAttribute('class','pill streamer off');
                             };
                         };
-                        if ($livestreamers[0] != "") {
+                        if (livestreamers[0] != '') {
                             setTimeout(thisShitLive, 15000);
                         } else {
                             setTimeout(thisShitLive, 5000);
                         };
                     };
-                    
-                });
+                };
+                request.send();
             };
             function thisShitPopular(){
-                $hito = "<?php echo $cur_stream ?>";
-                $.get("/"+$hito+"/nclients", function(data, status) {
-                    if (status == "success") {
-                        $(document).find("#viewers")[0].innerHTML = data;
+                var request = new XMLHttpRequest();
+                request.open('GET', '<?php echo $cur_stream ?>/nclients');
+                request.onload = function() {
+                    if (request.status >= 200 && request.status < 400) {
+                        document.getElementById('viewers').innerHTML = request.responseText;
                     } else {
-                        $(document).find("#viewers")[0].innerHTML = "0";
+                        document.getElementById('viewers').innerHTML = 0;
                     };
                     setTimeout(thisShitPopular,30000);
-                });
+                };
+                request.send();
             }
-            $(document).ready(function(){
-                <?php if( ! isset( $_GET['stream'] ) ):?>
-                    $('.open-menu')[0].click();
-                <?php endif; ?>
+            document.addEventListener("DOMContentLoaded", function(){
+<?php if( ! isset( $_GET['stream'] ) ):?>
+                document.querySelector('.open-menu').click();
+<?php endif; ?>
                 thisShitLive();
                 thisShitPopular();
             });
