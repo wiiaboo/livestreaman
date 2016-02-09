@@ -8,21 +8,13 @@
         <title><?php echo sprintf( 'Stream do %s', $cur_stream ) ?></title>
 
         <!-- Bootstrap Core CSS -->
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Custom CSS -->
         <link href="/css/style.css" rel="stylesheet">
 
         <!-- Custom Fonts -->
-        <!-- <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
-        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700" rel="stylesheet" type="text/css">
         
     </head>
     <body>
@@ -61,7 +53,7 @@
   
             <div class="content">
                 <!-- player -->
-                <div id='playersXnbojBtEFKm'></div>
+                <div id='player'></div>
                 <p>
                     <a href="/stats">Viewers: <span id="viewers">0</span></a>
                     <a href=<?php echo sprintf( '"rtmp://ls.fsbn.eu/live/%s.flv"', $cur_stream ) ?>>link rtmp (0 delay)</a>
@@ -73,15 +65,11 @@
         </div>    
         <!-- wrapper -->
         
-        <div class="main-footer">
-            <span>Copyright @2015<span>
-        </div>
-        
         <!-- scripts -->
-        <script src="/js/jquery.js"></script>
-        <script src="http://jwpsrv.com/library/QlceYJEcEeOYBCIACi0I_Q.js"></script>
+        <!--<script src="//jwpsrv.com/library/QlceYJEcEeOYBCIACi0I_Q.js"></script>-->
+        <script src="https://content.jwplatform.com/libraries/So79Dm4F.js"></script>
         <script type='text/javascript'>
-            jwplayer('playersXnbojBtEFKm').setup({
+            jwplayer('player').setup({
                 file: <?php echo sprintf( "'rtmp://ls.fsbn.eu/live/flv:%s.flv'", $cur_stream ) ?>,
                 autostart: 'true',
                 width: '100%',

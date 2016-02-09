@@ -158,12 +158,12 @@ a {
     display: inline-block;
 }
 
-#playersXnbojBtEFKm_wrapper {
+#player {
     max-height: 500px !important;
 }
 
 @media (max-width: 1366px) {
-    #playersXnbojBtEFKm_wrapper {
+    #player {
         max-height: 450px !important;
     }
 }
